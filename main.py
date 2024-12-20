@@ -32,7 +32,7 @@ def first_attack():
             print(f"Success rate: {success / N}\n")
 
 def second_attack():
-    k_exponent = [5, 6, 7]
+    k_exponent = [10, 12, 14]
     l_exponent = [5, 6, 7]
 
     for k in k_exponent:
