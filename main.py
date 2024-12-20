@@ -18,12 +18,11 @@ def first_attack():
             for i in range(N):
                 random_hash = tools.ripemd160(tools.random_bytes(256))[36:]
                 for j in range(L):
-                    if random_hash in redundancy_table.values():
+                    if tools.binary_search(redundancy_table, random_hash):
                         success += 1
                         break
                     else:
                         random_hash = tools.ripemd160(redundancy_function.get(random_hash))[36:]
-
             
             print("---New Attack---")
             print(f"K: 2^{k}")
@@ -32,7 +31,7 @@ def first_attack():
             print(f"Success rate: {success / N}\n")
 
 def second_attack():
-    k_exponent = [5, 6, 7]
+    k_exponent = [10, 12, 14]
     l_exponent = [5, 6, 7]
 
     for k in k_exponent:
@@ -51,7 +50,7 @@ def second_attack():
                 out = False
                 for j in range(L):
                     for redundancy_function, redundancy_table in redundancy_tables.items():
-                        if hashes[j] in redundancy_table.values():
+                        if tools.binary_search(redundancy_table, hashes[j]):
                             success += 1
                             out = True
                             break
@@ -67,8 +66,6 @@ def second_attack():
             print(f"Success rate: {success / N}\n")
                 
 
-    
-
 if __name__ == "__main__":
-     first_attack()
-    # second_attack()
+    # first_attack()
+    second_attack()
