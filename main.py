@@ -1,5 +1,6 @@
 from redundancy import Redundancy
 import tools
+import time
 
 truncation = 16
 N = 10000
@@ -10,6 +11,7 @@ def first_attack():
 
     for k in k_exponent:
         for l in l_exponent:
+            start_time = time.time()  
             success = 0
             redundancy_function = Redundancy(128 - truncation)
             redundancy_table = tools.get_redundancy_table(k, l, redundancy_function, truncation)
@@ -24,11 +26,16 @@ def first_attack():
                     else:
                         random_hash = tools.ripemd160(redundancy_function.get(random_hash))[36:]
             
+            end_time = time.time()  
+            elapsed_time = end_time - start_time  
+            elapsed_minutes = elapsed_time / 60  
+
             print("---New Attack---")
             print(f"K: 2^{k}")
             print(f"L: 2^{l}")
             print(f"Prediction by Hellman: {tools.prediction_by_hellman(2**k, 2**l, truncation)}")
-            print(f"Success rate: {success / N}\n")
+            print(f"Success rate: {success / N}")
+            print(f"Elapsed time: {elapsed_minutes:.2f} minutes\n")
 
 def second_attack():
     k_exponent = [10, 12, 14]
@@ -37,6 +44,7 @@ def second_attack():
     for k in k_exponent:
         K = 2**k
         for l in l_exponent:
+            start_time = time.time()
             success = 0
             redundancy_tables = {}
             L = 2**l
@@ -59,13 +67,17 @@ def second_attack():
                     if out:
                         break
 
+            end_time = time.time() 
+            elapsed_time = end_time - start_time  
+            elapsed_minutes = elapsed_time / 60  
             print("---New Attack---")
             print(f"K: 2^{k}")
             print(f"L: 2^{l}")
             print(f"Prediction by Hellman: {tools.prediction_by_hellman(2**k, 2**l, truncation)}")
-            print(f"Success rate: {success / N}\n")
-                
+            print(f"Success rate: {success / N}")
+            print(f"Elapsed time: {elapsed_minutes:.2f} minutes\n")
+
 
 if __name__ == "__main__":
-    # first_attack()
-    second_attack()
+    first_attack()
+    # second_attack()
